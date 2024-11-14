@@ -1,55 +1,29 @@
-// src/components/UserList.js
-
 import React, { useEffect, useState } from "react";
-import {
-  getUserValues,
-  createUserValue,
-  updateUserValue,
-  deleteUserValue,
-} from "../api"; // Thay đổi tên các hàm
+import { createUserValue, deleteUserValue, getUsers } from "../api";
+import { Link } from "react-router-dom";
 
 function UserList() {
-  const [userValues, setUserValues] = useState([]);
-  const [newUserValue, setNewUserValue] = useState({ name: "", email: "" });
+  const [users, setUsers] = useState([]);
+  const [newUser, setNewUser] = useState({ name: "", email: "" });
 
   useEffect(() => {
-    fetchUserValues();
+    fetchUsers();
   }, []);
 
-  /**
-   * Hàm lấy danh sách người dùng từ server
-   */
-  const fetchUserValues = async () => {
-    const response = await getUserValues();
-    setUserValues(response.data);
+  const fetchUsers = async () => {
+    const response = await getUsers();
+    setUsers(response.data);
   };
 
-  /**
-   * Hàm xử lý tạo người dùng mới
-   */
-  const handleCreateUserValue = async () => {
-    await createUserValue(newUserValue);
-    fetchUserValues();
-    setNewUserValue({ name: "", email: "" });
+  const handleCreateUser = async () => {
+    await createUserValue(newUser);
+    fetchUsers();
+    setNewUser({ name: "", email: "" });
   };
 
-  /**
-   * Hàm xử lý cập nhật người dùng
-   */
-  const handleUpdateUserValue = async (id) => {
-    const updatedUserValue = userValues.find(
-      (userValue) => userValue._id === id
-    );
-    await updateUserValue(id, updatedUserValue);
-    fetchUserValues();
-  };
-
-  /**
-   * Hàm xử lý xóa người dùng
-   */
-  const handleDeleteUserValue = async (id) => {
+  const handleDeleteUser = async (id) => {
     await deleteUserValue(id);
-    fetchUserValues();
+    fetchUsers();
   };
 
   return (
@@ -58,30 +32,24 @@ function UserList() {
       <input
         type="text"
         placeholder="Name"
-        value={newUserValue.name}
-        onChange={(e) =>
-          setNewUserValue({ ...newUserValue, name: e.target.value })
-        }
+        value={newUser.name}
+        onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
       />
       <input
         type="email"
         placeholder="Email"
-        value={newUserValue.email}
-        onChange={(e) =>
-          setNewUserValue({ ...newUserValue, email: e.target.value })
-        }
+        value={newUser.email}
+        onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
       />
-      <button onClick={handleCreateUserValue}>Add User</button>
+      <button onClick={handleCreateUser}>Add User</button>
       <ul>
-        {userValues.map((userValue) => (
-          <li key={userValue._id}>
-            {userValue.name} - {userValue.email}
-            <button onClick={() => handleUpdateUserValue(userValue._id)}>
-              Edit
+        {users.map((user) => (
+          <li key={user._id}>
+            {user.name} - {user.email}
+            <button>
+              <Link to={`/edit/${user._id}`}>Edit</Link>
             </button>
-            <button onClick={() => handleDeleteUserValue(userValue._id)}>
-              Delete
-            </button>
+            <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
           </li>
         ))}
       </ul>

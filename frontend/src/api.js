@@ -7,8 +7,11 @@ const API_URL = "http://localhost:5000/api/userValues"; // Đảm bảo endpoint
 /**
  * API để lấy danh sách người dùng
  */
+export const getUsers = () => axios.get(API_URL);
 export const getUserValues = () => axios.get(API_URL);
-
+export const getUser = (id) => axios.get(`${API_URL}/${id}`);
+export const updateUserValue = (id, user) =>
+  axios.put(`${API_URL}/${id}`, user);
 /**
  * API để tạo người dùng mới
  */
@@ -19,8 +22,6 @@ export const createUserValue = (userValue) => {
 /**
  * API để cập nhật thông tin người dùng
  */
-export const updateUserValue = (id, userValue) =>
-  axios.put(`${API_URL}/${id}`, userValue);
 
 /**
  * API để xóa người dùng
