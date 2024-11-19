@@ -16,9 +16,19 @@ function UserList() {
   };
 
   const handleCreateUser = async () => {
+    if (newUser.name.trim() === "" || newUser.email.trim() === "") {
+      alert("Name and email cannot be empty.");
+      return;
+    }
     await createUserValue(newUser);
     fetchUsers();
     setNewUser({ name: "", email: "" });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleCreateUser();
+    }
   };
 
   const handleDeleteUser = async (id) => {
@@ -34,12 +44,14 @@ function UserList() {
         placeholder="Name"
         value={newUser.name}
         onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+        onKeyDown={handleKeyDown}
       />
       <input
         type="email"
         placeholder="Email"
         value={newUser.email}
         onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+        onKeyDown={handleKeyDown}
       />
       <button onClick={handleCreateUser}>Add User</button>
       <ul>
