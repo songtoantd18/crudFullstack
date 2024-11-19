@@ -11,10 +11,10 @@ const PORT = 5000;
 
 // Kết nối MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/crudFullstack11", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://songtoantd18crud:123@cluster0.d0ltp.mongodb.net/crudFullstack?retryWrites=true&w=majority&appName=Cluster0",
+    {}
+  )
   .then(() => console.log("MongoDB connected"))
   .catch((error) => console.log(error));
 
